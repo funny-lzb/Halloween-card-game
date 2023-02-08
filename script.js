@@ -68,9 +68,9 @@ function reStart(e) {
     if (event.target.matches(".overlay-text")) {
       gameOverReminder.classList.remove("visible")
       vitoryReminder.classList.remove("visible")
-      countDown()
-      clearFlips()
-      clearVisible()
+      countDown()  //重新计时
+      clearFlips()  //重置Flips
+      clearVisible() //给卡牌移除visible类
     }
   })
 }
