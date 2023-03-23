@@ -17,7 +17,7 @@ const victorySound = new Audio('Assets/Audio/victory.wav')
 const gameOverSound = new Audio('Assets/Audio/gameOver.wav')
 
 // 页面挂载时
-timeRemianing.innerText = 60
+timeRemianing.innerText = 200
 flips.innerText = `${flipCount}`
 
 document.addEventListener('click', e => {
@@ -33,7 +33,7 @@ function clickStart() {
 }
 
 function countDown() {
-  let timeInit = 60
+  let timeInit = 200
   timeRemianing.innerText = `${timeInit}`
 
   const preInterval = setInterval(gameOver, 1000)
