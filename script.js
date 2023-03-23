@@ -33,7 +33,7 @@ function clickStart() {
 }
 
 function countDown() {
-  let timeInit = 200
+  let timeInit = 60
   timeRemianing.innerText = `${timeInit}`
 
   const preInterval = setInterval(gameOver, 1000)
