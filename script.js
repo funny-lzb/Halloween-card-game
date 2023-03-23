@@ -1,34 +1,34 @@
 // DOM及所需变量
-const Reminder = document.querySelector(".overlay-text")
-const timeRemianing = document.querySelector("#time-remaining")
-const flips = document.querySelector("#flips")
-const gameOverReminder = document.querySelector("#game-over-text")
+const Reminder = document.querySelector('.overlay-text')
+const timeRemianing = document.querySelector('#time-remaining')
+const flips = document.querySelector('#flips')
+const gameOverReminder = document.querySelector('#game-over-text')
 
 let flipCount = 0
 let flipedCardRecord = []
 
 // 获取音乐
-const bgMusic = new Audio("Assets/Audio/creepy.mp3")
+const bgMusic = new Audio('Assets/Audio/creepy.mp3')
 bgMusic.volume = 0.5
 bgMusic.loop = true
-const flipSound = new Audio("Assets/Audio/flip.wav")
-const matchSound = new Audio("Assets/Audio/match.wav")
-const victorySound = new Audio("Assets/Audio/victory.wav")
-const gameOverSound = new Audio("Assets/Audio/gameOver.wav")
+const flipSound = new Audio('Assets/Audio/flip.wav')
+const matchSound = new Audio('Assets/Audio/match.wav')
+const victorySound = new Audio('Assets/Audio/victory.wav')
+const gameOverSound = new Audio('Assets/Audio/gameOver.wav')
 
 // 页面挂载时
-timeRemianing.innerText = 200
+timeRemianing.innerText = 60
 flips.innerText = `${flipCount}`
 
-document.addEventListener("click", e => {
-  if (e.target.matches(".overlay-text")) clickStart() // 1.去掉提示页面
+document.addEventListener('click', e => {
+  if (e.target.matches('.overlay-text')) clickStart() // 1.去掉提示页面
 
-  if (e.target.matches(".spider")) recordFlips(e) // 2.记录翻牌次数
+  if (e.target.matches('.spider')) recordFlips(e) // 2.记录翻牌次数
 })
 
 function clickStart() {
   bgMusic.play()
-  Reminder.classList.remove("visible")
+  Reminder.classList.remove('visible')
   countDown() // 1.1 时间倒计时
 }
 
@@ -40,8 +40,8 @@ function countDown() {
   // 倒计时到0，提示Game Over且计时不会继续走了
   function gameOver() {
     if (timeInit <= 0) {
-      if (timeInit === 0) gameOverReminder.classList.add("visible")
-      if ((e = "click")) {
+      if (timeInit === 0) gameOverReminder.classList.add('visible')
+      if ((e = 'click')) {
         bgMusic.pause()
         gameOverSound.play()
         reStart(e) // 1.2 游戏重新开始
@@ -55,21 +55,21 @@ function countDown() {
   }
 
   // 清理上一次的定时器
-  document.addEventListener("click", e => {
-    if (e.target.matches(".overlay-text")) clearInterval(preInterval)
+  document.addEventListener('click', e => {
+    if (e.target.matches('.overlay-text')) clearInterval(preInterval)
   })
 }
 
 // 1.2再次点击，重新开始游戏(重新开始倒计时,重新记flips，所有的card移除类)
 function reStart(e) {
-  const vitoryReminder = document.querySelector("#victory-text")
+  const vitoryReminder = document.querySelector('#victory-text')
 
   document.addEventListener(e, event => {
-    if (event.target.matches(".overlay-text")) {
-      gameOverReminder.classList.remove("visible")
-      vitoryReminder.classList.remove("visible")
-      countDown()  //重新计时
-      clearFlips()  //重置Flips
+    if (event.target.matches('.overlay-text')) {
+      gameOverReminder.classList.remove('visible')
+      vitoryReminder.classList.remove('visible')
+      countDown() //重新计时
+      clearFlips() //重置Flips
       clearVisible() //给卡牌移除visible类
     }
   })
@@ -88,10 +88,10 @@ function recordFlips(e) {
 // 2.1点击卡片后，把卡片翻过来
 function flipCard(e) {
   flipSound.play()
-  const card = e.target.closest(".card")
-  card.classList.add("visible")
+  const card = e.target.closest('.card')
+  card.classList.add('visible')
 
-  const flipedCard = card.querySelector(".card-value")
+  const flipedCard = card.querySelector('.card-value')
   match(flipedCard) // 2.2匹配卡片
 }
 
@@ -116,10 +116,10 @@ function match(flipedCard) {
 
 // 2.3如果不匹配，那么永远删掉数组[1]，直到匹配为止
 function matchFailed(flipedCard) {
-  const card2 = flipedCard.closest(".card")
+  const card2 = flipedCard.closest('.card')
 
   setTimeout(() => {
-    card2.classList.remove("visible")
+    card2.classList.remove('visible')
   }, 1000)
   flipedCardRecord.splice(1)
 }
@@ -128,12 +128,12 @@ function matchFailed(flipedCard) {
 // 思路：通过遍历card列表，找到哪个跟第二个card一样src的card，给他俩分别添加matched
 function matchSuccess(flipedCard) {
   matchSound.play()
-  const Imgs = Array.from(document.querySelectorAll(".card-value"))
+  const Imgs = Array.from(document.querySelectorAll('.card-value'))
 
   const ImgSame = Imgs.filter(i => i.src === flipedCard.src)
   ImgSame.forEach(i => {
-    const card = i.closest(".card")
-    card.classList.add("matched")
+    const card = i.closest('.card')
+    card.classList.add('matched')
   })
 
   allMatched() //2.5检测是否全部匹配(boolean)
@@ -144,26 +144,26 @@ function matchSuccess(flipedCard) {
 // 2.5全部匹配时，那么就提示成功页面，并且有音乐
 // 问题是，怎么表示全部匹配呢？---->检测每个card类上是否有matched
 function allMatched() {
-  const cards = Array.from(document.querySelectorAll(".card"))
-  const vitory = document.querySelector("#victory-text")
+  const cards = Array.from(document.querySelectorAll('.card'))
+  const vitory = document.querySelector('#victory-text')
 
   const successCondition = cards.every(card =>
-    card.classList.contains("matched")
+    card.classList.contains('matched')
   )
   if (successCondition) {
-    cards.forEach(card => card.classList.remove("matched"))
+    cards.forEach(card => card.classList.remove('matched'))
     setTimeout(addVisible, 500)
   }
 
   function addVisible() {
     bgMusic.pause()
     victorySound.play()
-    vitory.classList.add("visible")
+    vitory.classList.add('visible')
   }
-  reStart("click")
+  reStart('click')
 }
 
 function clearVisible() {
-  const cards = Array.from(document.querySelectorAll(".card"))
-  cards.forEach(card => card.classList.remove("visible"))
+  const cards = Array.from(document.querySelectorAll('.card'))
+  cards.forEach(card => card.classList.remove('visible'))
 }
